@@ -6,6 +6,7 @@ const requireAuth = require("./middleware/requireAuth");
 const authRoutes = require("./routes/authRoutes");
 
 const app = express();
+const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 app.use(authRoutes);
@@ -14,7 +15,8 @@ const mongoUri =
   "mongodb+srv://admin:passwordpassword@sociallycluster-flhko.mongodb.net/test?retryWrites=true&w=majority";
 mongoose.connect(mongoUri, {
   useNewUrlParser: true,
-  userCreateIndex: true
+  userCreateIndex: true,
+  useUnifiedTopology: true
 });
 
 mongoose.connection.on("connected", () => {
@@ -29,6 +31,6 @@ app.get("/", requireAuth, (req, res) => {
   res.send("Homepage working!");
 });
 
-app.listen(3000, () => {
-  console.log("Listening on port 3000");
+app.listen(port, () => {
+  console.log(`Listening on port ${port}`);
 });
