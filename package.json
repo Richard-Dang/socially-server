@@ -14,7 +14,8 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "tunnel": "ngrok http 3000"
+    "tunnel": "ngrok http 3000",
+    "deploy": "git push heroku master"
   },
   "repository": {
     "type": "git",
