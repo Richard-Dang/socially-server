@@ -22,7 +22,16 @@ const userSchema = new mongoose.Schema({
   },
   bio: {
     type: String
-  }
+  },
+  friends: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User"
+    }
+  ]
+  // avatar: {
+  //   type: String
+  // }
 });
 
 userSchema.pre("save", function(next) {

@@ -1,9 +1,13 @@
 require("./models/User");
+require("./models/SocialAccount");
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const requireAuth = require("./middleware/requireAuth");
+const requireAuth = require("./middlewares/requireAuth");
 const authRoutes = require("./routes/authRoutes");
+const friendRoutes = require("./routes/friendRoutes");
+const socialAccountRoutes = require("./routes/socialAccountRoutes");
+const searchRoutes = require("./routes/searchRoutes");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -13,6 +17,9 @@ const mongoUri =
 
 app.use(bodyParser.json());
 app.use(authRoutes);
+app.use(friendRoutes);
+app.use(socialAccountRoutes);
+app.use(searchRoutes);
 
 mongoose.connect(mongoUri, {
   useNewUrlParser: true,
