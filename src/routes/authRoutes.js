@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
+const requireAuth = require("../middlewares/requireAuth");
+
 const User = mongoose.model("User");
 
 const router = express.Router();
@@ -41,7 +43,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/user", (req, res) => {
+router.get("/user", requireAuth, (req, res) => {
   res.send(req.user);
 });
 
