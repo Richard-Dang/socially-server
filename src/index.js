@@ -23,7 +23,7 @@ app.use(searchRoutes);
 
 mongoose.connect(mongoUri, {
   useNewUrlParser: true,
-  userCreateIndex: true,
+  useCreateIndex: true,
   useUnifiedTopology: true
 });
 

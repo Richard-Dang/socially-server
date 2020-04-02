@@ -11,10 +11,8 @@ router.use(requireAuth);
 router.get("/search", async (req, res) => {
   // Need to get set of all users that aren't friends
   const allUsers = await User.find({});
-  const currentUser = await User.findById(req.user._id);
+  const currentUser = req.user;
   const friends = currentUser.friends;
-
-  console.log(typeof currentUser._id);
 
   const searchableUsers = allUsers.filter(
     user => !friends.includes(user._id) && !currentUser._id.equals(user._id)
