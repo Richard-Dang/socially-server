@@ -13,7 +13,7 @@ router.post("/register", async (req, res) => {
     await user.save();
 
     const token = jwt.sign({ userId: user._id }, "SOCIALLY_SECRET_KEY");
-    res.send({ token });
+    res.send({ token, currentUser: user });
   } catch (err) {
     return res.status(422).send(err.message);
   }
@@ -35,7 +35,7 @@ router.post("/login", async (req, res) => {
     await user.comparePassword(password);
 
     const token = jwt.sign({ userId: user._id }, "SOCIALLY_SECRET_KEY");
-    res.send({ token });
+    res.send({ token, currentUser: user });
   } catch (err) {
     return res.status(422).send({ error: "Invalid email or password" });
   }
