@@ -2,12 +2,22 @@ const mongoose = require("mongoose");
 const express = require("express");
 const requireAuth = require("../middlewares/requireAuth");
 
+const User = mongoose.model("User");
+
 const router = express.Router();
 
 router.use(requireAuth);
 
-router.get("/friends", (req, res) => {
-  res.send(req.user.friends);
+router.get("/friends", async (req, res) => {
+  const friendIds = req.user.friends;
+
+  const friends = await User.find({
+    _id: {
+      $in: friendIds
+    }
+  });
+
+  res.send(friends);
 });
 
 router.post("/addfriend", async (req, res) => {
