@@ -9,6 +9,8 @@ const router = express.Router();
 router.use(requireAuth);
 
 router.get("/socialaccounts", async (req, res) => {
+  console.log(req.body);
+
   const { userId } = req.body;
 
   const socialAccounts = await SocialAccount.find({ userId });
