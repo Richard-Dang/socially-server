@@ -16,7 +16,7 @@ router.post("/socialaccounts", async (req, res) => {
   res.send(socialAccounts);
 });
 
-router.post("/socialaccounts", async (req, res) => {
+router.post("/addsocialaccount", async (req, res) => {
   const { accountType, username } = req.body;
 
   if (!accountType || !username) {
