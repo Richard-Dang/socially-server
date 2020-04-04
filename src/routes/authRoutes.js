@@ -1,7 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
-const requireAuth = require("../middlewares/requireAuth");
 
 const User = mongoose.model("User");
 
@@ -41,10 +40,6 @@ router.post("/login", async (req, res) => {
   } catch (err) {
     return res.status(422).send({ error: "Invalid email or password" });
   }
-});
-
-router.get("/user", requireAuth, (req, res) => {
-  res.send(req.user);
 });
 
 module.exports = router;

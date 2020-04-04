@@ -8,6 +8,7 @@ const authRoutes = require("./routes/authRoutes");
 const friendRoutes = require("./routes/friendRoutes");
 const socialAccountRoutes = require("./routes/socialAccountRoutes");
 const searchRoutes = require("./routes/searchRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -20,18 +21,19 @@ app.use(authRoutes);
 app.use(friendRoutes);
 app.use(socialAccountRoutes);
 app.use(searchRoutes);
+app.use(userRoutes);
 
 mongoose.connect(mongoUri, {
   useNewUrlParser: true,
   useCreateIndex: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
 });
 
 mongoose.connection.on("connected", () => {
   console.log("Connected to mongo instance");
 });
 
-mongoose.connection.on("error", err => {
+mongoose.connection.on("error", (err) => {
   console.error("Error connecting to mongo", err);
 });
 
