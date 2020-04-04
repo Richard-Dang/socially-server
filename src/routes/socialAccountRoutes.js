@@ -16,6 +16,7 @@ router.post("/socialaccounts", async (req, res) => {
   res.send(socialAccounts);
 });
 
+// TODO: Change route to a get and accept params instead of a body by convention
 router.post("/addsocialaccount", async (req, res) => {
   const { accountType, username } = req.body;
 
