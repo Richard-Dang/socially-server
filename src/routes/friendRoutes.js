@@ -24,7 +24,7 @@ router.get("/friends", async (req, res) => {
   }
 });
 
-router.post("/addfriend", async (req, res) => {
+router.post("/friends", async (req, res) => {
   const { friendId } = req.body;
   const user = req.user;
 
@@ -45,7 +45,7 @@ router.post("/addfriend", async (req, res) => {
   }
 });
 
-router.post("/removefriend", async (req, res) => {
+router.delete("/friends", async (req, res) => {
   const { friendId } = req.body;
   const user = req.user;
 

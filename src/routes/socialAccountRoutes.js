@@ -8,10 +8,8 @@ const router = express.Router();
 
 router.use(requireAuth);
 
-// TODO: Change route to a get and accept params instead of a body by convention
-
 router.get("/socialaccounts", async (req, res) => {
-  const { userId } = req.body;
+  const { userId } = req.query;
 
   if (!userId) {
     return res.status(422).send({ error: "You must provide an userId" });
@@ -25,7 +23,6 @@ router.get("/socialaccounts", async (req, res) => {
   }
 });
 
-// TODO: rename endpoint to /socialaccounts
 router.post("/socialaccounts", async (req, res) => {
   const { accountType, username } = req.body;
 
