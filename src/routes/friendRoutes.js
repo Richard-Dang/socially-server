@@ -11,25 +11,37 @@ router.use(requireAuth);
 router.get("/friends", async (req, res) => {
   const friendIds = req.user.friends;
 
-  const friends = await User.find({
-    _id: {
-      $in: friendIds,
-    },
-  });
+  try {
+    const friends = await User.find({
+      _id: {
+        $in: friendIds,
+      },
+    });
 
-  res.send(friends);
+    res.send(friends);
+  } catch (err) {
+    res.status(422).send({ error: err.message });
+  }
 });
 
 router.post("/addfriend", async (req, res) => {
   const { friendId } = req.body;
   const user = req.user;
 
-  if (!user.friends.includes(friendId)) {
-    user.friends.push(friendId);
-    await user.save();
-    res.send({ friendId });
-  } else {
-    res.status(422).send({ error: "Friend has already been added" });
+  if (!friendId) {
+    res.status(422).send({ error: "Must provide friendId to add" });
+  }
+
+  try {
+    if (!user.friends.includes(friendId)) {
+      user.friends.push(friendId);
+      await user.save();
+      res.send({ friendId });
+    } else {
+      res.status(422).send({ error: "Friend has already been added" });
+    }
+  } catch (err) {
+    res.status(422).send({ error: err.message });
   }
 });
 
@@ -37,12 +49,20 @@ router.post("/removefriend", async (req, res) => {
   const { friendId } = req.body;
   const user = req.user;
 
-  if (user.friends.includes(friendId)) {
-    user.friends.pull(friendId);
-    await user.save();
-    res.send({ friendId });
-  } else {
-    res.status(422).send({ error: "Friend has already been removed" });
+  if (!friendId) {
+    res.status(422).send({ error: "Must provide friendId to delete" });
+  }
+
+  try {
+    if (user.friends.includes(friendId)) {
+      user.friends.pull(friendId);
+      await user.save();
+      res.send({ friendId });
+    } else {
+      res.status(422).send({ error: "Friend has already been removed" });
+    }
+  } catch (err) {
+    res.status(422).send({ error: err.message });
   }
 });
 

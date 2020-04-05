@@ -12,9 +12,17 @@ router.use(requireAuth);
 
 router.post("/socialaccounts", async (req, res) => {
   const { userId } = req.body;
-  const socialAccounts = await SocialAccount.find({ userId });
 
-  res.send(socialAccounts);
+  if (!userId) {
+    return res.status(422).send({ error: "You must provide an userId" });
+  }
+
+  try {
+    const socialAccounts = await SocialAccount.find({ userId });
+    res.send(socialAccounts);
+  } catch (err) {
+    res.status(422).send({ error: err.message });
+  }
 });
 
 // TODO: rename endpoint to /socialaccount
@@ -42,20 +50,45 @@ router.post("/addsocialaccount", async (req, res) => {
 router.put("/socialaccounts", async (req, res) => {
   const { socialAccounts } = req.body;
 
+  if (!socialAccounts) {
+    return res.status(422).send({ error: "Must social accounts to update" });
+  }
   // TODO: Find a better way to do this update
-  const updateAccount = async (socialAccount) => {
-    const filter = { _id: socialAccount._id };
-    const update = { username: socialAccount.username };
-    return await SocialAccount.findOneAndUpdate(filter, update, {
-      new: true,
+  try {
+    const updateAccount = async (socialAccount) => {
+      const filter = { _id: socialAccount._id };
+      const update = { username: socialAccount.username };
+      return await SocialAccount.findOneAndUpdate(filter, update, {
+        new: true,
+      });
+    };
+
+    const updatedAccounts = await Promise.all(
+      socialAccounts.map((s) => updateAccount(s))
+    );
+
+    res.send(updatedAccounts);
+  } catch (err) {
+    return res.status(422).send(err.message);
+  }
+});
+
+router.delete("/socialaccounts", async (req, res) => {
+  const { accountId } = req.body;
+
+  if (!accountId) {
+    return res.status(422).send({ error: "Must social account ID to delete" });
+  }
+
+  try {
+    const removedAccount = await SocialAccount.deleteOne({
+      _id: accountId,
     });
-  };
 
-  const updatedAccounts = await Promise.all(
-    socialAccounts.map((s) => updateAccount(s))
-  );
-
-  res.send(updatedAccounts);
+    res.send(removedAccount);
+  } catch (err) {
+    return res.status(422).send(err.message);
+  }
 });
 
 module.exports = router;

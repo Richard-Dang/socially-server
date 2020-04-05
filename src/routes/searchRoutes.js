@@ -10,15 +10,19 @@ router.use(requireAuth);
 
 router.get("/search", async (req, res) => {
   // Need to get set of all users that aren't friends
-  const allUsers = await User.find({});
-  const currentUser = req.user;
-  const friends = currentUser.friends;
+  try {
+    const allUsers = await User.find({});
+    const currentUser = req.user;
+    const friends = currentUser.friends;
 
-  const searchableUsers = allUsers.filter(
-    user => !friends.includes(user._id) && !currentUser._id.equals(user._id)
-  );
+    const searchableUsers = allUsers.filter(
+      (user) => !friends.includes(user._id) && !currentUser._id.equals(user._id)
+    );
 
-  res.send(searchableUsers);
+    res.send(searchableUsers);
+  } catch (err) {
+    res.status(422).send({ error: err.message });
+  }
 });
 
 module.exports = router;
