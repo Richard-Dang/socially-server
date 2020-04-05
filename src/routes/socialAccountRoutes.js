@@ -47,50 +47,30 @@ router.post("/addsocialaccount", async (req, res) => {
   }
 });
 
+// Workaround for any account modification (add, update, delete):
+// Delete all accounts with userId and then just add list of accounts from state
 router.put("/socialaccounts", async (req, res) => {
   const { socialAccounts } = req.body;
+  const userId = req.user._id;
 
-  if (!socialAccounts) {
-    return res
-      .status(422)
-      .send({ error: "Must provide social accounts to update" });
-  }
-  // TODO: Find a better way to do this update
+  const updateAccount = async (socialAccount) => {
+    const { accountType, username } = socialAccount;
+    const newSocialAccount = new SocialAccount({
+      userId,
+      accountType,
+      username,
+    });
+    return await newSocialAccount.save();
+  };
+
   try {
-    const updateAccount = async (socialAccount) => {
-      const filter = { _id: socialAccount._id };
-      const update = { username: socialAccount.username };
-      return await SocialAccount.findOneAndUpdate(filter, update, {
-        new: true,
-      });
-    };
+    await SocialAccount.deleteMany({ userId });
 
     const updatedAccounts = await Promise.all(
       socialAccounts.map((s) => updateAccount(s))
     );
 
     res.send(updatedAccounts);
-  } catch (err) {
-    return res.status(422).send(err.message);
-  }
-});
-
-router.delete("/socialaccounts", async (req, res) => {
-  const { accountId } = req.body;
-  console.log(accountId);
-
-  if (!accountId) {
-    return res
-      .status(422)
-      .send({ error: "Must provide social account ID to delete" });
-  }
-
-  try {
-    const removedAccount = await SocialAccount.deleteOne({
-      _id: accountId,
-    });
-
-    res.send(removedAccount);
   } catch (err) {
     return res.status(422).send(err.message);
   }
