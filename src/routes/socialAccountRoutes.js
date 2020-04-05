@@ -25,7 +25,7 @@ router.post("/socialaccounts", async (req, res) => {
   }
 });
 
-// TODO: rename endpoint to /socialaccount
+// TODO: rename endpoint to /socialaccounts
 router.post("/addsocialaccount", async (req, res) => {
   const { accountType, username } = req.body;
 
@@ -51,7 +51,9 @@ router.put("/socialaccounts", async (req, res) => {
   const { socialAccounts } = req.body;
 
   if (!socialAccounts) {
-    return res.status(422).send({ error: "Must social accounts to update" });
+    return res
+      .status(422)
+      .send({ error: "Must provide social accounts to update" });
   }
   // TODO: Find a better way to do this update
   try {
@@ -75,9 +77,12 @@ router.put("/socialaccounts", async (req, res) => {
 
 router.delete("/socialaccounts", async (req, res) => {
   const { accountId } = req.body;
+  console.log(accountId);
 
   if (!accountId) {
-    return res.status(422).send({ error: "Must social account ID to delete" });
+    return res
+      .status(422)
+      .send({ error: "Must provide social account ID to delete" });
   }
 
   try {
