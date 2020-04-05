@@ -40,14 +40,22 @@ router.post("/addsocialaccount", async (req, res) => {
 });
 
 router.put("/socialaccounts", async (req, res) => {
-  const socialAccount = req.body;
-  const filter = { _id: socialAccount._id };
-  const update = { username: socialAccount.username };
+  const { socialAccounts } = req.body;
 
-  const updatedAccount = await SocialAccount.findOneAndUpdate(filter, update, {
-    new: true,
-  });
-  res.send(updatedAccount);
+  // TODO: Find a better way to do this update
+  const updateAccount = async (socialAccount) => {
+    const filter = { _id: socialAccount._id };
+    const update = { username: socialAccount.username };
+    return await SocialAccount.findOneAndUpdate(filter, update, {
+      new: true,
+    });
+  };
+
+  const updatedAccounts = await Promise.all(
+    socialAccounts.map((s) => updateAccount(s))
+  );
+
+  res.send(updatedAccounts);
 });
 
 module.exports = router;
