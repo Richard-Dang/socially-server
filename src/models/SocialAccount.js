@@ -12,9 +12,13 @@ const socialAccountSchema = new mongoose.Schema({
       "facebook",
       "instagram",
       "linkedin",
-      "snapchat",
+      "tumblr",
       "twitter",
-      "tiktok"
+      "twitch",
+      "steam",
+      "soundcloud",
+      "github",
+      "flickr"
     ],
     default: "facebook",
   },
