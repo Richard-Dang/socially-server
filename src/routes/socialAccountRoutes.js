@@ -57,8 +57,6 @@ router.put("/socialaccounts", async (req, res) => {
   const { socialAccounts } = req.body;
   const userId = req.user._id;
 
-  console.log(socialAccounts);
-
   const updateAccount = async (socialAccount) => {
     const { accountType, username } = socialAccount;
     const newSocialAccount = new SocialAccount({
