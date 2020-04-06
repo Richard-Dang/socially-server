@@ -3,19 +3,26 @@ const mongoose = require("mongoose");
 const socialAccountSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
+    ref: "User",
   },
   accountType: {
     type: String,
     required: true,
-    enum: ["facebook", "instagram", "linkedin"],
-    default: "facebook"
+    enum: [
+      "facebook",
+      "instagram",
+      "linkedin",
+      "snapchat",
+      "twitter",
+      "tiktok"
+    ],
+    default: "facebook",
   },
   username: {
     type: String,
     required: true,
-    unique: true
-  }
+    unique: true,
+  },
 });
 
 mongoose.model("SocialAccount", socialAccountSchema);

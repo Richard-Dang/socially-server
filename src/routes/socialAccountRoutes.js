@@ -17,7 +17,14 @@ router.get("/socialaccounts", async (req, res) => {
 
   try {
     const socialAccounts = await SocialAccount.find({ userId });
-    res.send(socialAccounts);
+    const allAccountTypes = SocialAccount.schema.path("accountType").enumValues;
+    const usedAccountTypes = socialAccounts.map((a) => a.accountType);
+
+    const unusedAccountTypes = allAccountTypes.filter(
+      (a) => !usedAccountTypes.includes(a)
+    );
+
+    res.send({ socialAccounts, unusedAccountTypes });
   } catch (err) {
     res.status(422).send({ error: err.message });
   }
