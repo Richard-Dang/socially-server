@@ -16,7 +16,7 @@ const port = process.env.PORT || 3000;
 const mongodb_password = process.env.MONGODB_PASSWORD;
 const mongoUri =
   process.env.MONGODB_URL ||
-  `mongodb+srv://RichardDang:${mongodb_password}@cluster0-flhko.mongodb.net/test?retryWrites=true&w=majority`;
+  `mongodb+srv://RichardDang:${mongodb_password}@cluster0-flhko.mongodb.net/Socially?retryWrites=true&w=majority`;
 
 app.use(bodyParser.json());
 app.use(authRoutes);
