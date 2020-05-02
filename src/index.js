@@ -1,3 +1,4 @@
+require("dotenv").config();
 require("./models/User");
 require("./models/SocialAccount");
 const express = require("express");
@@ -12,9 +13,10 @@ const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 const port = process.env.PORT || 3000;
+const mongodb_password = process.env.MONGODB_PASSWORD;
 const mongoUri =
   process.env.MONGODB_URL ||
-  "mongodb+srv://admin:passwordpassword@sociallycluster-flhko.mongodb.net/test?retryWrites=true&w=majority";
+  `mongodb+srv://RichardDang:${mongodb_password}@cluster0-flhko.mongodb.net/test?retryWrites=true&w=majority`;
 
 app.use(bodyParser.json());
 app.use(authRoutes);
